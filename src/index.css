@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Add smooth scrolling for the frames */
+html, body {
+    scroll-behavior: smooth;
+  }
+  
+  .scrollable-frame {
+    scrollbar-width: thin;
+  }
+  

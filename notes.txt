@@ -1,0 +1,65 @@
+ham package.json me comment nhi kar skate.
+package.json me ham jo dependencies download karte hai vo dekh sakte hai
+jaise react icon dependencies. meta data
+
+[calc(100vh-6.625rem)] overflow-y-scroll overflow-x-hidden- calc heigh calculate karega iska use ham side baar vertical scroll line ke liye kar rahe hai
+
+[[Class components require a render() method to output HTML (JSX).
+jsx
+class Car extends React.Component {
+  render() {
+    return <h2>I am a Car!</h2>;
+  }
+}]]
+
+[[Props in Class Components:
+What Are Props?
+Props are arguments passed from a parent component to a child component in React.
+They are used to pass data or methods to child components.
+Props are read-only, meaning they cannot be modified by the child component.
+Example:
+jsx
+Copy code
+function Car(props) {
+  return <h2>I am a {props.brand}</h2>;
+}
+function Garage() {
+  return <Car brand="Ford" />;
+}
+In the above code:
+Garage is the parent component.
+The Car component receives brand="Ford" as a prop.
+
+Accessed using this.props.
+Used to pass data from parent to child.
+Example:
+jsx
+Copy code
+class Car extends React.Component {
+  //javascript
+  render() {
+    return <h2> //html  I am a {this.props.model}</h2>;
+  }
+}]]
+
+[[State:
+Mutable data stored in this.state.
+Update using this.setState().
+Example:
+jsx
+Copy code
+this.setState({ brand: "Toyota" });]]
+
+api key ko ham .env file me likhte hai kyuki vo sensitive hota hai. kahi bhi deploy karte time .env file share nhi hota isliye isme api safe rahta hai.
+
+axios- ek libarary hai jo http request make karne ke liye help karta hai
+
+context api- iska use ham state ko manage karne ke liye, globaly data ko paas karne ke liye components ke bich me
+
+useEffect - iska use ham changes ya effects ko dikhane ke liye karte hai
+
+A video, in the context of web development or data handling, can be represented as an array of objects, where each object contains details about a specific video. So, when you use .map() on a video, you're likely mapping through a collection (an array) of video data rather than a single video.
+
+Optional chaining (?.) is a JavaScript feature that allows you to safely access properties of an object or call methods without causing errors if any part of the chain is null or undefined.
+
+Example: user?.profile?.name will return undefined instead of throwing an error if user or profile is null or undefined.
