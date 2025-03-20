@@ -1,39 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
-import { IoMdMic } from "react-icons/io";
-import { RiVideoAddFill } from "react-icons/ri";
-import { AiOutlineBell } from "react-icons/ai";
-import Avatar from "react-avatar";
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/search?q=${query}`);
+    }
+  };
+
   return (
     <div className="flex justify-between fixed top-0 w-full bg-white px-6 py-2">
       {/* Left Section */}
       <div className="flex items-center space-x-4">
         <AiOutlineMenu className="text-center cursor-pointer" />
-        <img src="/Logo.png" alt="Logo" className="w-28" />
+        <img src="/Logo.jpg" alt="Logo" className="w-28" />
       </div>
 
       {/* Middle Section */}
       <div className="flex w-[35%] items-center">
-        <div className="w-full px-3 py-2 border rounded-l-full">
-          <input type="text" placeholder="Search" className="outline-none w-full" />
-        </div>
-        <button className="px-4 py-2 border bg-gray-100 rounded-r-full">
-          <CiSearch size={"24px"} />
-        </button>
-        <IoMdMic
-          size={"42px"}
-          className="ml-3 border rounded-full p-2 cursor-pointer hover:bg-gray-200 duration-200"
-        />
-      </div>
-
-      {/* Right Section */}
-      <div className="flex space-x-5 items-center">
-        <RiVideoAddFill className="text-2xl cursor-pointer" />
-        <AiOutlineBell className="text-2xl cursor-pointer" />
-        <Avatar src="/profile.png" size="32" round={true} />
+        <form onSubmit={handleSearch} className="flex w-full">
+          <div className="w-[75%] px-3 py-2 border rounded-l-full">
+            <input
+              type="text"
+              placeholder="Search in VidCode..."
+              className="outline-none w-full"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+          <button type="submit" className="px-4 py-2 border bg-gray-100 rounded-r-full">
+            <CiSearch size={"24px"} />
+          </button>
+        </form>
       </div>
     </div>
   );

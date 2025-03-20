@@ -1,33 +1,38 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState, useContext } from "react"; 
 import fetchTrendingVideos from "../utils/rapidapi.js";
 import Sidebar from "./Sidebar";
 import MonacoEditor from "@monaco-editor/react";
+import Video from "./Video";
+import { VideoContext } from "./context/VideoContext";
 
 const Home = () => {
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { videos, setVideos, loading, setLoading } = useContext(VideoContext);
   const [showCodeEditor, setShowCodeEditor] = useState(false);
+  const [showNotepad, setShowNotepad] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("javascript"); // Default language
   const [output, setOutput] = useState(""); // To store the output of the code
 
   useEffect(() => {
-    const loadVideos = async () => {
-      try {
-        const data = await fetchTrendingVideos();
-        setVideos(data);
-      } catch (error) {
-        console.error("Failed to fetch trending videos");
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (videos.length === 0) {
+      const loadVideos = async () => {
+        try {
+          const data = await fetchTrendingVideos();
+          setVideos(data);
+        } catch (error) {
+          console.error("Failed to fetch trending videos");
+        } finally {
+          setLoading(false);
+        }
+      };
 
-    loadVideos();
-  }, []);
+      loadVideos();
+    } else {
+      setLoading(false);
+    }
+  }, [videos, setVideos, setLoading]);
 
   const handleRunCode = (code) => {
     try {
-     
       if (selectedLanguage === "javascript") {
         const result = eval(code);  
         setOutput(result ? result.toString() : "Code executed successfully");
@@ -57,29 +62,7 @@ const Home = () => {
           <h1 className="text-2xl font-semibold mb-4">Trending Videos</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {videos.map((video) => (
-              <div
-                key={video.videoId}
-                className="bg-gray-100 rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300"
-              >
-                <img
-                  src={video.videoThumbnails[0]?.url}
-                  alt={video.title}
-                  className="w-full h-40 object-cover rounded-md mb-2"
-                />
-                <h3 className="text-lg font-medium">{video.title}</h3>
-                <p className="text-gray-600 text-sm">Author: {video.author}</p>
-                <button
-                  onClick={() =>
-                    window.open(
-                      `https://www.youtube.com/watch?v=${video.videoId}`,
-                      "_blank"
-                    )
-                  }
-                  className="mt-2 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                >
-                  Watch Now
-                </button>
-              </div>
+              <Video key={video.videoId} video={video} />
             ))}
           </div>
         </div>
@@ -91,6 +74,14 @@ const Home = () => {
         className="absolute bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg hover:bg-blue-600"
       >
         {showCodeEditor ? "Close Code Editor" : "Open Code Editor"}
+      </button>
+
+      {/* Toggle Button for Notepad */}
+      <button
+        onClick={() => setShowNotepad(!showNotepad)}
+        className="absolute bottom-16 right-4 bg-yellow-500 text-white px-4 py-2 rounded shadow-lg hover:bg-yellow-600"
+      >
+        {showNotepad ? "Close Notepad" : "Open Notepad"}
       </button>
 
       {/* Code Editor Section */}
@@ -148,6 +139,25 @@ const Home = () => {
               <pre className="whitespace-pre-wrap">{output}</pre>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Notepad Section */}
+      {showNotepad && (
+        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gray-50 border-t border-gray-300 p-4 overflow-y-auto">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-xl font-semibold">Notepad</h2>
+            <button
+              onClick={() => setShowNotepad(false)}
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            >
+              Close Notepad
+            </button>
+          </div>
+          <textarea
+            className="w-full h-full p-2 border border-gray-300 rounded"
+            placeholder="Write your notes here..."
+          ></textarea>
         </div>
       )}
     </div>

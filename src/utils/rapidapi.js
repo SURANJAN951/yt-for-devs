@@ -6,7 +6,7 @@ const fetchTrendingVideos = async () => {
     method: 'GET',
     url: 'https://youtube138.p.rapidapi.com/v2/trending',
     headers: {
-      'x-rapidapi-key': '3989f8dc43msh5553b2accedd2e6p1ca911jsn72a99777aef8',
+      'x-rapidapi-key': '8cbe3c99c3mshe8a7f9ed971a1eep115482jsn399f17432618',
       'x-rapidapi-host': 'youtube138.p.rapidapi.com'
     }
   };
