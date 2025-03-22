@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useContext } from "react"; 
+import React, { useEffect, useState, useContext } from "react";
 import fetchTrendingVideos from "../utils/rapidapi.js";
-import Sidebar from "./Sidebar";
-import MonacoEditor from "@monaco-editor/react";
-import Video from "./Video";
 import { VideoContext } from "./context/VideoContext";
+import MonacoEditor from "@monaco-editor/react";
+import VideoGrid from "./VideoGrid";
 
-const Home = () => {
+const Home = ({ isSidebarVisible }) => {
   const { videos, setVideos, loading, setLoading } = useContext(VideoContext);
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const [showNotepad, setShowNotepad] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("javascript"); // Default language
-  const [output, setOutput] = useState(""); // To store the output of the code
+  const [selectedLanguage, setSelectedLanguage] = useState("javascript");
+  const [output, setOutput] = useState("");
 
   useEffect(() => {
     if (videos.length === 0) {
@@ -34,7 +33,7 @@ const Home = () => {
   const handleRunCode = (code) => {
     try {
       if (selectedLanguage === "javascript") {
-        const result = eval(code);  
+        const result = eval(code);
         setOutput(result ? result.toString() : "Code executed successfully");
       } else {
         setOutput("Execution not supported for this language.");
@@ -49,23 +48,11 @@ const Home = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-100">
-      {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar with Increased Width */}
-        <div className="w-80 bg-gray-200 h-full overflow-y-auto border-r border-gray-300">
-          <Sidebar />
-        </div>
-
-        {/* Videos Section */}
-        <div className="flex-1 p-4 bg-white overflow-y-auto">
-          <h1 className="text-2xl font-semibold mb-4">Trending Videos</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {videos.map((video) => (
-              <Video key={video.videoId} video={video} />
-            ))}
-          </div>
-        </div>
+    <div className="h-screen flex flex-col bg-gray-100 overflow-y-auto">
+      {/* Videos Section */}
+      <div className="flex-1 p-4 bg-white overflow-y-auto">
+        <h1 className="text-2xl font-semibold mb-4">Trending Videos</h1>
+        <VideoGrid videos={videos} isSidebarVisible={isSidebarVisible} />
       </div>
 
       {/* Toggle Button for Code Editor */}
@@ -99,7 +86,9 @@ const Home = () => {
 
           {/* Language Selector */}
           <div className="mb-4">
-            <label htmlFor="language" className="mr-2">Select Language:</label>
+            <label htmlFor="language" className="mr-2">
+              Select Language:
+            </label>
             <select
               id="language"
               value={selectedLanguage}
@@ -108,25 +97,24 @@ const Home = () => {
             >
               <option value="javascript">JavaScript</option>
               <option value="python">Python</option>
-              {/* Add other languages as needed */}
             </select>
           </div>
 
           {/* Monaco Editor */}
           <MonacoEditor
-            height="100%"  // Takes the full height of the section
-            language={selectedLanguage}  // Dynamic language mode
-            value="console.log('Hello, World!');"  // Initial content
-            theme="vs-dark"  // Set theme
+            height="100%"
+            language={selectedLanguage}
+            value="console.log('Hello, World!');"
+            theme="vs-dark"
             options={{
-              lineNumbers: "on",  // Show line numbers
-              minimap: { enabled: false }  // Hide minimap for a cleaner UI
+              lineNumbers: "on",
+              minimap: { enabled: false },
             }}
           />
 
           {/* Run Button */}
           <button
-            onClick={() => handleRunCode(`console.log('Hello, World!');`)} // Example code to run
+            onClick={() => handleRunCode(`console.log('Hello, World!');`)}
             className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
           >
             Run Code
