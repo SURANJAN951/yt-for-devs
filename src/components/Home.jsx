@@ -43,17 +43,20 @@ const Home = ({ isSidebarVisible }) => {
     }
   };
 
-  if (loading) {
-    return <p className="text-center text-xl text-gray-500">Loading...</p>;
-  }
-
   return (
     <div className="h-screen flex flex-col bg-gray-100 overflow-y-auto">
       {/* Videos Section */}
-      <div className="flex-1 p-4 bg-white overflow-y-auto">
-        <h1 className="text-2xl font-semibold mb-4">Trending Videos</h1>
-        <VideoGrid videos={videos} isSidebarVisible={isSidebarVisible} />
-      </div>
+      {loading ? (
+        <div className="flex-1 p-4 bg-white overflow-y-auto">
+          <h1 className="text-2xl font-semibold mb-4">Trending Videos</h1>
+          <p className="text-center text-lg text-gray-500">Loading videos...</p>
+        </div>
+      ) : (
+        <div className="flex-1 p-4 bg-white overflow-y-auto">
+          <h1 className="text-2xl font-semibold mb-4">Trending Videos</h1>
+          <VideoGrid videos={videos} isSidebarVisible={isSidebarVisible} />
+        </div>
+      )}
 
       {/* Toggle Button for Code Editor */}
       <button
