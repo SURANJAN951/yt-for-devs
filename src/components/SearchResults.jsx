@@ -21,7 +21,7 @@ const SearchResults = () => {
         url: "https://youtube138.p.rapidapi.com/search/",
         params: { q: query, hl: "en", gl: "US", pageToken },
         headers: {
-          "x-rapidapi-key": "8cbe3c99c3mshe8a7f9ed971a1eep115482jsn399f17432618",
+          "x-rapidapi-key": "VITE_YOUTUBE_API_KEY",
           "x-rapidapi-host": "youtube138.p.rapidapi.com",
         },
       };
